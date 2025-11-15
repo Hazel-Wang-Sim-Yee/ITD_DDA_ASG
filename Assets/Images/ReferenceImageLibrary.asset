@@ -27,3 +27,23 @@ MonoBehaviour:
     m_SpecifySize: 0
     m_Name: donQ
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5149977515029887706
+      m_GuidHigh: 13847008961852347818
+    m_SerializedTextureGuid:
+      m_GuidLow: 13836316130930008855
+      m_GuidHigh: 9828744206188200872
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: morae
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5492173392474967426
+      m_GuidHigh: 16978467988439197856
+    m_SerializedTextureGuid:
+      m_GuidLow: 10899923921451487614
+      m_GuidHigh: 14222870004690461355
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: quiho
+    m_Texture: {fileID: 0}
