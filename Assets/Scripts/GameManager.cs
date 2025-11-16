@@ -5,6 +5,7 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+
     [SerializeField]
     GameObject Character;
     [SerializeField]
@@ -47,13 +48,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         Debug.Log(other.gameObject.name + " triggered");
         if (other.gameObject.CompareTag("Food"))
         {
             Debug.Log("Character triggered with food");
             StartCoroutine(StateChanger("IdentifiedFood"));
+        }
+
+        if (other.gameObject.GetComponent<FoodBehaviour>().Eatable == true)
+        {
+            Debug.Log("Character is eating the food");
+            other.gameObject.SetActive(false);
+            StartCoroutine(StateChanger("EatingFood"));
         }
     }
 

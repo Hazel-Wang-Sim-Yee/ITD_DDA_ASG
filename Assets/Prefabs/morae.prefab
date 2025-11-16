@@ -88,6 +88,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 675d856c609d15b4d97dd10ae12d5e75, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8770724398443375453}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 675d856c609d15b4d97dd10ae12d5e75, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7188865609603359998}
   m_SourcePrefab: {fileID: 100100000, guid: 675d856c609d15b4d97dd10ae12d5e75, type: 3}
 --- !u!1 &6527516927065562053 stripped
 GameObject:
@@ -194,7 +197,19 @@ MonoBehaviour:
       m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -7188865609603359998}
+        m_TargetAssemblyTypeName: FoodBehaviour, Assembly-CSharp
+        m_MethodName: OnSelectExited
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -286,7 +301,7 @@ MonoBehaviour:
   m_PermittedDisplacementAxes: -1
   m_ConstrainedAxisDisplacementMode: 1
   m_TwoHandedRotationMode: 1
-  m_AllowOneHandedScaling: 1
+  m_AllowOneHandedScaling: 0
   m_AllowTwoHandedScaling: 0
   m_OneHandedScaleSpeed: 0.5
   m_ThresholdMoveRatioForScale: 0.05
@@ -294,3 +309,16 @@ MonoBehaviour:
   m_MinimumScaleRatio: 0.25
   m_MaximumScaleRatio: 2
   m_ScaleMultiplier: 0.25
+--- !u!114 &-7188865609603359998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527516927065562053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b892facec9b9d3e46856193ed50b8be7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Eatable: 0
