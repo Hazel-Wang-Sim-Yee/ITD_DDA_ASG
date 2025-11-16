@@ -47,6 +47,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.gameObject.name + " triggered");
+        if (other.gameObject.CompareTag("Food"))
+        {
+            Debug.Log("Character triggered with food");
+            StartCoroutine(StateChanger("IdentifiedFood"));
+        }
+    }
+
     IEnumerator StateChanger(string newState)
     {
         Debug.Log("Changing state to: " + newState);
@@ -63,7 +73,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator HappyCharacter()
     {
-        Debug.Log("The character is happy");
+        //Debug.Log("The character is happy");
         while (currentState == "HappyCharacter")
         {
             EverySecond();
@@ -97,6 +107,38 @@ public class GameManager : MonoBehaviour
                 yield break; // Exit this coroutine
         }
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    IEnumerator IdentifiedFood()
+    {
+        while (currentState == "IdentifiedFood")
+        {
+            //Debug.Log("Character has identified food");
+            // Logic for identified food state
+            Character.GetComponent<Renderer>().material.color = Color.yellow; // Example: Change character color to yellow
+
+            // After some time, return to happy state
+            yield return new WaitForSeconds(5f);
+            StartCoroutine(StateChanger("HappyCharacter"));
+            yield break; // Exit this coroutine
+        }
+    }
+
+    IEnumerator EatingFood()
+    {
+        if (currentState == "EatingFood")
+        {
+            Debug.Log("Character is eating food");
+            // Logic for eating food state
+            Character.GetComponent<Renderer>().material.color = Color.blue; // Example: Change character color to blue
+
+            // After eating, increase fullness and return to happy state
+            Fullness = Mathf.Min(Fullness + 30, 100);
+            Cleanliness = Mathf.Max(Cleanliness - 10, 0); // Eating might reduce cleanliness
+            yield return new WaitForSeconds(3f);
+            StartCoroutine(StateChanger("HappyCharacter"));
+            yield break; // Exit this coroutine
         }
     }
 }
