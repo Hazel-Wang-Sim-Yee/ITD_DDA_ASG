@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(255, 255, 255);
+    color: rgb(255, 158, 174);
+}
+
+.signInForm {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: auto;
+    gap: 10px;
+    margin-top: 25vh;
+    background-color: rgb(255, 193, 211);
+    padding: 80px;
+    align-items: center;
+    border-radius: 10px;
+
+}
+
+
+.signInForm button {
+    background-color: rgb(255, 45, 115);
+    width: 100px;
+    height: 60x;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    margin-top: 10px;
+}
+
+.signInForm input {
+    width: 150px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+#hlinkcentered {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* home.html style */
+
+.navBar {
+    background-color: rgb(255, 101, 160);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navBar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.creatureImage {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 10px;
+}
