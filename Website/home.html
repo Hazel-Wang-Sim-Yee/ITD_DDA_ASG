@@ -7,7 +7,8 @@
     <body>
         <nav>
             <div class="navBar">
-                <a href="home.html">Home</a>
+                <span id="playerNameDisplay">Player</span>
+                <button id="logOutBtn">Log Out</button>
             </div>
         </nav>
         <div>
@@ -15,17 +16,15 @@
             <p>Here are your stats for your Bon!</p>
         </div>
         <div>
-            <span>
-                <img class="creatureImage" src="images/placeholder.png" alt="bon image that depends on stage of growth">
-            </span>
-            <span>           
+            <section id="bonInfoSection">
+                <img class="creatureImage" src="images/placeholder.png" alt="bon image that depends on stage of growth">       
                 <!-- Stats to be filled in by script.js , change to chart.js-->
+                <h2 id="creatureName">Name</h2>
                 <p id="hunger">Hunger: </p>
                 <p id="cleanliness">Cleanliness: </p>
                 <p id="happiness">Happiness: </p>
                 <p id="stage">Stage: </p>
-        </span>
-
+            </section>
         </div>
     </body>
 </html>

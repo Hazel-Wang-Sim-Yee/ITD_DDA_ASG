@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: rgb(255, 255, 255);
-    color: rgb(255, 158, 174);
+    color: rgb(255, 137, 157);
 }
 
 .signInForm {
@@ -11,11 +11,17 @@ body {
     margin: auto;
     gap: 10px;
     margin-top: 25vh;
-    background-color: rgb(255, 193, 211);
+    background-color: rgb(255, 227, 235);
     padding: 80px;
     align-items: center;
     border-radius: 10px;
 
+}
+
+.signInForm a{
+    color: rgb(255, 97, 149);
+    
+    font-weight: bold;
 }
 
 
@@ -34,14 +40,20 @@ body {
     width: 150px;
     height: 25px;
     border-radius: 5px;
-    border: 1px solid gray;
+    border: none;
     padding: 5px;
+}
+
+::placeholder {
+ color: rgba(255, 157, 173, 1);
 }
 
 #hlinkcentered {
     text-align: center;
     margin-top: 10px;
 }
+
+
 
 /* home.html style */
 
@@ -53,7 +65,7 @@ body {
     align-items: center;
 }
 
-.navBar a {
+.navBar a, #playerNameDisplay {
     color: white;
     text-decoration: none;
     margin: 0 10px;
