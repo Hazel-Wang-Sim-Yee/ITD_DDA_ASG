@@ -47,3 +47,23 @@ MonoBehaviour:
     m_SpecifySize: 0
     m_Name: quiho
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4827808523519908378
+      m_GuidHigh: 2898875285099705019
+    m_SerializedTextureGuid:
+      m_GuidLow: 1262260571878398139
+      m_GuidHigh: 12291794386558295290
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: Shower
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5397132781521253259
+      m_GuidHigh: 10116153761859012529
+    m_SerializedTextureGuid:
+      m_GuidLow: 393172976452165217
+      m_GuidHigh: 6960262075975047835
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: Bed
+    m_Texture: {fileID: 0}

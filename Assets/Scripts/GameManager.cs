@@ -9,15 +9,18 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject Character;
     [SerializeField]
-    int Awakeness = 100;
+    float Awakeness = 100;
     [SerializeField]
-    int Cleanliness = 100;
+    float Cleanliness = 100;
     [SerializeField]
-    int Fullness = 100;
+    float Fullness = 100;
     [SerializeField]
-    int Recreation = 100;
+    float Recreation = 100;
     [SerializeField]
     string currentState = "HappyCharacter";
+    [SerializeField]
+    public bool isSleeping = false;
+
 
     void Start()
     {
@@ -48,6 +51,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnButtonClick()
+    {
+        isSleeping = !isSleeping;
+        if (isSleeping)
+        {
+            StartCoroutine(StateChanger("Sleeping"));
+        }
+        else
+        {
+            StartCoroutine(StateChanger("HappyCharacter"));
+        }
+    }
+
     void OnTriggerStay(Collider other)
     {
         Debug.Log(other.gameObject.name + " triggered");
@@ -55,13 +71,21 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Character triggered with food");
             StartCoroutine(StateChanger("IdentifiedFood"));
+            if (other.gameObject.GetComponent<FoodBehaviour>().Eatable == true)
+            {
+                Debug.Log("Character is eating the food");
+                other.gameObject.SetActive(false);
+                StartCoroutine(StateChanger("EatingFood"));
+            }
         }
 
-        if (other.gameObject.GetComponent<FoodBehaviour>().Eatable == true)
+        if (other.gameObject.CompareTag("Shower"))
         {
-            Debug.Log("Character is eating the food");
-            other.gameObject.SetActive(false);
-            StartCoroutine(StateChanger("EatingFood"));
+            if (other.gameObject.GetComponent<ShowerBehaviour>().ShowerOn == true)
+            {
+                Debug.Log("Character triggered with shower");
+                StartCoroutine(StateChanger("Showering"));
+            }
         }
     }
 
@@ -113,7 +137,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Character is becoming happy again due to good stats");
                 StartCoroutine(StateChanger("HappyCharacter"));
                 yield break; // Exit this coroutine
-        }
+            }
             yield return new WaitForSeconds(1f);
         }
     }
@@ -146,6 +170,39 @@ public class GameManager : MonoBehaviour
             Cleanliness = Mathf.Max(Cleanliness - 10, 0); // Eating might reduce cleanliness
             yield return new WaitForSeconds(3f);
             StartCoroutine(StateChanger("HappyCharacter"));
+            yield break; // Exit this coroutine
+        }
+    }
+
+    IEnumerator Showering()
+    {
+        if (currentState == "Showering")
+        {
+            Debug.Log("Character is showering");
+            // Logic for showering state
+            Character.GetComponent<Renderer>().material.color = Color.cyan; // Example: Change character color to cyan
+
+            // After showering, increase cleanliness and return to happy state
+            Cleanliness = Mathf.Min(Cleanliness + 1, 100);
+            Recreation = Mathf.Max(Recreation - 0.02f, 0); // Showering might reduce recreation slightly
+            yield return new WaitForSeconds(0.1f);
+            StartCoroutine(StateChanger("HappyCharacter"));
+            yield break; // Exit this coroutine
+        }
+    }
+
+    IEnumerator Sleeping()
+    {
+        if (currentState == "Sleeping")
+        {
+            Debug.Log("Character is sleeping");
+            // Logic for sleeping state
+            Character.GetComponent<Renderer>().material.color = Color.magenta; // Example: Change character color to magenta
+
+            // After sleeping, increase awakeness and return to happy state
+            Awakeness = Mathf.Min(Awakeness + 1, 100);
+            Fullness = Mathf.Max(Fullness - 0.02f, 0); // Sleeping might reduce fullness slightly
+            yield return new WaitForSeconds(0.1f);
             yield break; // Exit this coroutine
         }
     }
