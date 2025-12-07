@@ -65,11 +65,19 @@ body {
     align-items: center;
 }
 
-.navBar a, #playerNameDisplay {
+.navBar #playerNameDisplay{
     color: white;
     text-decoration: none;
     margin: 0 10px;
 }
+
+.navBar #logoutBtn {
+    background-color: rgb(255, 45, 115);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
 
 .creatureImage {
     width: 200px;
@@ -78,3 +86,7 @@ body {
     border-radius: 10px;
     margin: 10px;
 }
+
+#statsChart {
+    margin: 50px;
+ }

@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-import { getDatabase, child, push, ref, set, get } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+import { getDatabase, child, push, ref, set, get, onChildChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
 import firebaseConfig from "./firebase-config.js";
 
 //Initialise Firebase
@@ -11,10 +11,12 @@ const players = ref(db, "players");
 const auth = getAuth(app);
 
 
+
+// == SIGN UP PAGE CODE, CREATE PLAYER ==
 function createPlayer(playerId, name, email, password) {
 
     set(ref(db, 'players/' + playerId), {
-        name: name,
+        username: name,
         email: email,
         password: password,
         creature: {
@@ -54,7 +56,7 @@ if (document.getElementById("createPlayerBtn")){
     window.location.href = "home.html";
 });
 }
-
+// == LANDING PAGE CODE, LOG IN ==
 // add event to button if button exists
 if (document.getElementById("logInBtn")){
     document.getElementById("logInBtn").addEventListener("click", (event) => {
@@ -94,37 +96,90 @@ if (document.getElementById("logInBtn")){
 });
 }
 
-//Home page log out button event
-if (document.getElementById("logOutBtn")){
+// == HOME PAGE CODE ==
+// ===== Get player data by ID =====
+async function getPlayerById(playerId) {
+    const playerRef = child(ref(db, "players"), playerId);
+    const snapshot = await get(playerRef);
+    return snapshot.exists() ? snapshot.val() : null;
+}
 
-    document.getElementById("logOutBtn").addEventListener("click", (event) => {
-        event.preventDefault();
-        
-        localStorage.removeItem("playerId"); // Clear stored player ID
-        window.location.href = "landingPage.html";
-});
+const chosenPlayer = ref(db, "players/" + localStorage.getItem("playerId"));
+onChildChanged(chosenPlayer, onPlayerChanged);
+
+function onPlayerChanged(snapshot) {
+    const playerData = snapshot.val();
+   alert("Creature data updated!");
 }
 
 
+// ===== Chart.js setup =====
+let chart = null;
 
+function updateChart(creature) {
+    const ctx = document.getElementById("statsChart");
 
-//Get one player’s info
-    // function getPLayerInfo(playerId) {
-    //     const playerRef = child(players, playerId);
+    if (chart) chart.destroy();
 
-    //     get(playerRef).then(snapshot => {
-    //         if (snapshot.exists()) {
-    //             const data = snapshot.val();
-    //             console.log("Selected Player:", playerId);
-    //             //Update HTML
-    //             document.getElementById("playerNameDisplay").textContent = data.name;
-    //             document.getElementById("hunger").textContent = " Hunger: " + data.creature.hunger;
-    //             document.getElementById("cleanliness").textContent = " Cleanliness: " + data.creature.cleanliness;
-    //             document.getElementById("happiness").textContent = " Happiness: " + data.creature.happiness;
-    //             document.getElementById("stage").textContent = " Stage: " + data.creature.stage;
+    chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Hunger", "Cleanliness", "Happiness"],
+            datasets: [{
+                label: "Bon Stats",
+                data: [
+                    creature.hunger,
+                    creature.cleanliness,
+                    creature.happiness
+                ]
+            }]
+        },
+        options: { 
+            indexAxis: 'y',
+            scales: {
+            y: {
+            beginAtZero: true
+            }
+            }
+        }
+    });
+}
 
-    //         } else {
-    //             console.log("Player not found");
-    //         }
-    //     }).catch(console.error);
-    // }}
+// == On Home Page Load ==
+if (window.location.pathname.endsWith("home.html")) {
+
+    window.addEventListener("load", async () => { 
+
+        const playerId = localStorage.getItem("playerId");
+
+        if (!playerId) {
+            window.location.href = "landingPage.html";
+            return;
+        }
+
+        // Fetch DB data
+        const data = await getPlayerById(playerId);
+
+        if (!data) {
+            console.log("Player not found");
+            return;
+        }
+
+        // Update text data
+        document.getElementById("playerNameDisplay").textContent = data.username;
+        document.getElementById("creatureName").textContent = data.creature.name;
+        document.getElementById("hunger").textContent = "Hunger: " + data.creature.hunger;
+        document.getElementById("cleanliness").textContent = "Cleanliness: " + data.creature.cleanliness;
+        document.getElementById("happiness").textContent = "Happiness: " + data.creature.happiness;
+        document.getElementById("stage").textContent = "Stage: " + data.creature.stage;
+
+        // Update Chart
+        updateChart(data.creature);
+    });
+}
+
+// == Logout button ==
+document.getElementById("logOutBtn")?.addEventListener("click", () => {
+    localStorage.removeItem("playerId");
+    window.location.href = "landingPage.html";
+});
