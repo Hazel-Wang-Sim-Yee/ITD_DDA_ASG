@@ -20,12 +20,26 @@ public class GameManager : MonoBehaviour
     string currentState = "HappyCharacter";
     [SerializeField]
     public bool isSleeping = false;
+    [SerializeField]
+    public Material happyMaterial;
+    [SerializeField]
+    public Material unhappyMaterial;
+
+    public Transform PlayerCamera;
 
 
     void Start()
     {
+        PlayerCamera = Camera.main.transform;
+        Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
         StartCoroutine(HappyCharacter());
         Debug.Log("Game Started");
+    }
+
+    void Update()
+    {
+        Character.transform.LookAt(new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z));
+        //Character.transform.position = new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z + 0.5f);
     }
 
     void EverySecond()
@@ -49,6 +63,7 @@ public class GameManager : MonoBehaviour
                 Recreation -= 1;
             }
         }
+        
     }
 
     public void OnButtonClick()
@@ -110,7 +125,7 @@ public class GameManager : MonoBehaviour
         {
             EverySecond();
             // Logic for happy character
-            Character.GetComponent<Renderer>().material.color = Color.green; // Example: Change character color to green
+            Character.GetComponent<Renderer>().material = happyMaterial; // Example: Change character color to green
 
             // If any stat falls below a threshold, switch to unhappy state
             if (Awakeness < 50 || Cleanliness < 50 || Fullness < 50 || Recreation < 50)
@@ -129,7 +144,7 @@ public class GameManager : MonoBehaviour
         {
             EverySecond();
             // Logic for unhappy character
-            Character.GetComponent<Renderer>().material.color = Color.red; // Example: Change character color to red
+            Character.GetComponent<Renderer>().material = unhappyMaterial; // Example: Change character color to red
 
             // If all stats are above a threshold, switch to happy state
             if (Awakeness >= 50 && Cleanliness >= 50 && Fullness >= 50 && Recreation >= 50)
@@ -206,4 +221,6 @@ public class GameManager : MonoBehaviour
             yield break; // Exit this coroutine
         }
     }
+
+
 }
