@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Threading.Tasks;
 using System;
 
 public class GameManager : MonoBehaviour
 {
-
+    [SerializeField] private UnityEngine.UI.Slider HungerSlider;
+    [SerializeField] private UnityEngine.UI.Slider SleepinessSlider;
+    [SerializeField] private UnityEngine.UI.Slider CleanlinessSlider;
     [SerializeField]
     GameObject Character;
     [SerializeField]
