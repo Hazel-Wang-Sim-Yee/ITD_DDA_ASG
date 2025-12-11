@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "724345577244",
+    "firebase_url": "https://itdddaprojecthe-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "itdddaprojecthe",
+    "storage_bucket": "itdddaprojecthe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724345577244:android:386fbe2fa31c2c2d7ca4d9",
+        "android_client_info": {
+          "package_name": "com.np.itdddaASG12025"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa-nc_-ySNMo5suCpcAVULUaLyjDeNw2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

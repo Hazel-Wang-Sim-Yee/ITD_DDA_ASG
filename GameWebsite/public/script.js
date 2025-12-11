@@ -37,23 +37,27 @@ if (document.getElementById("createPlayerBtn")){
     const password = document.getElementById("playerPassword").value.trim();
     const email = document.getElementById("playerEmail").value.trim();
     createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log("User created:", user.uid);
-        })
-    const newPlayerRef = push(players);      // this generates a unique ID
-    const playerId = newPlayerRef.key;  
+    
+    .then(async (userCredential) => {
 
-    if (!name || !password || !email) {
-        alert("Please enter a name and password.");
-        return;
-    }
+        const user = userCredential.user;
+        const playerId = user.uid;   // 🎉 CORRECT — we use the Auth UID
+
+        console.log("User created:", playerId);
+
+        await createPlayer(playerId, name, email, password);
+
+        localStorage.setItem("playerId", playerId);
+        window.location.href = "home.html";
+    })
+    .catch((error) => {
+        alert(error.message);
+    });
+
     createPlayer(playerId, name, email, password);
     console.log("Player created:", name);
 
     localStorage.setItem("playerId", playerId);
-    window.location.href = "home.html";
 });
 }
 // == INDEX PAGE CODE, LOG IN ==
