@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <script type="module" src="script.js"></script>
+        <title>Home Page</title>
+    </head>
+    <body>
+        <nav>
+            <div class="navBar">
+                <span id="playerNameDisplay">Player</span>
+                <button id="logOutBtn">Log Out</button>
+            </div>
+        </nav>
+
+        <div>
+            <section class="bonInfoSection">
+                <img id="creatureImage" src="images/placeholder.png" width="200" height="200" alt="bon image that depends on stage of growth">       
+                <!-- Stats to be filled in by script.js , change to chart.js-->
+                <div class="stats">
+                    <h2 id="creatureName">Name</h2>
+
+                    <p id="stage">Stage: </p>
+
+                </div>
+
+                <canvas id="statsChart" width="200" height="50"></canvas>
+            </section>
+        </div>
+    </body>
+</html>
