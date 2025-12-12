@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -650.34546
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 349.20456
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -96,6 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e669f4a37d05a49b9d11b4f21b0e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HungerSlider: {fileID: 0}
+  SleepinessSlider: {fileID: 0}
+  CleanlinessSlider: {fileID: 0}
+  SleepButton: {fileID: 0}
+  bedDay: {fileID: 21300000, guid: 2826b963d3928d24290062a006c3d452, type: 3}
+  bedNight: {fileID: 21300000, guid: b730b90bbbd34b44e84d623cedfd0fe5, type: 3}
   Character: {fileID: 4276372745236369465}
   Awakeness: 100
   Cleanliness: 100

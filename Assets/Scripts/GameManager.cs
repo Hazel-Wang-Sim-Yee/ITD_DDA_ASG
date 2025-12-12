@@ -3,12 +3,27 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Threading.Tasks;
 using System;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private UnityEngine.UI.Slider HungerSlider;
-    [SerializeField] private UnityEngine.UI.Slider SleepinessSlider;
-    [SerializeField] private UnityEngine.UI.Slider CleanlinessSlider;
+    public static GameManager instance;
+    
+    public Slider HungerSlider;
+    public Slider SleepinessSlider;
+    public Slider CleanlinessSlider;
+
+    public Button SleepButton;
+
+    public Button ActionMenuButton;
+
+    [SerializeField]
+    public Sprite bedDay;
+
+    [SerializeField]
+    public Sprite bedNight;
+
     [SerializeField]
     GameObject Character;
     [SerializeField]
@@ -33,16 +48,31 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        isSleeping = false;
         PlayerCamera = Camera.main.transform;
         Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
         StartCoroutine(HappyCharacter());
         Debug.Log("Game Started");
+        ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
+        ActionMenuButton.onClick.AddListener(MoveToActivityScene);
+        SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
+        SleepButton.image.sprite = bedDay;
+        SleepButton.onClick.AddListener(OnButtonClick);
+        HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
+        SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
+        CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
+        HungerSlider.maxValue = 100;
+        SleepinessSlider.maxValue = 100;
+        CleanlinessSlider.maxValue = 100;
     }
 
     void Update()
     {
         Character.transform.LookAt(new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z));
         //Character.transform.position = new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z + 0.5f);
+        HungerSlider.value = Fullness;
+        SleepinessSlider.value = Awakeness;
+        CleanlinessSlider.value = Cleanliness;
     }
 
     void EverySecond()
@@ -72,14 +102,22 @@ public class GameManager : MonoBehaviour
     public void OnButtonClick()
     {
         isSleeping = !isSleeping;
+        Debug.Log("isSleeping: " + isSleeping);
         if (isSleeping)
         {
+            Debug.Log("Sleep button is " + SleepButton);
+            Debug.Log("BedNight sprite" + bedNight);
             StartCoroutine(StateChanger("Sleeping"));
         }
         else
         {
             StartCoroutine(StateChanger("HappyCharacter"));
         }
+    }
+
+    public void MoveToActivityScene()
+    {
+        SceneManager.LoadScene("Activity");
     }
 
     void OnTriggerStay(Collider other)
@@ -123,6 +161,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator HappyCharacter()
     {
+        if(isSleeping)
+        {
+            StartCoroutine(StateChanger("Sleeping"));
+            yield break;
+        }
         //Debug.Log("The character is happy");
         while (currentState == "HappyCharacter")
         {
@@ -216,11 +259,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("Character is sleeping");
             // Logic for sleeping state
             Character.GetComponent<Renderer>().material.color = Color.magenta; // Example: Change character color to magenta
+            SleepButton.image.sprite = bedNight;
 
             // After sleeping, increase awakeness and return to happy state
             Awakeness = Mathf.Min(Awakeness + 1, 100);
             Fullness = Mathf.Max(Fullness - 0.02f, 0); // Sleeping might reduce fullness slightly
             yield return new WaitForSeconds(0.1f);
+            StartCoroutine(StateChanger("HappyCharacter"));
             yield break; // Exit this coroutine
         }
     }
