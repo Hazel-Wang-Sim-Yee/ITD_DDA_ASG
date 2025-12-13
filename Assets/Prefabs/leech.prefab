@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.513289
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalRotation.x
@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0.85821587
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_LocalRotation.z
@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 82b997d8f4e8e534788dcc53e6a6d7f9, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 581438630c4138f4aae133faca0d3efb, type: 3}
       propertyPath: m_Name
       value: leech
@@ -100,6 +100,7 @@ MonoBehaviour:
   SleepinessSlider: {fileID: 0}
   CleanlinessSlider: {fileID: 0}
   SleepButton: {fileID: 0}
+  ActionMenuButton: {fileID: 0}
   bedDay: {fileID: 21300000, guid: 2826b963d3928d24290062a006c3d452, type: 3}
   bedNight: {fileID: 21300000, guid: b730b90bbbd34b44e84d623cedfd0fe5, type: 3}
   Character: {fileID: 4276372745236369465}

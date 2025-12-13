@@ -45,34 +45,89 @@ public class GameManager : MonoBehaviour
 
     public Transform PlayerCamera;
 
-
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+        }
+    }
     void Start()
     {
-        isSleeping = false;
-        PlayerCamera = Camera.main.transform;
-        Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
-        StartCoroutine(HappyCharacter());
-        Debug.Log("Game Started");
-        ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
-        ActionMenuButton.onClick.AddListener(MoveToActivityScene);
-        SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
-        SleepButton.image.sprite = bedDay;
-        SleepButton.onClick.AddListener(OnButtonClick);
-        HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
-        SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
-        CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
-        HungerSlider.maxValue = 100;
-        SleepinessSlider.maxValue = 100;
-        CleanlinessSlider.maxValue = 100;
+        // isSleeping = false;
+        // PlayerCamera = Camera.main.transform;
+        // Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
+        // StartCoroutine(HappyCharacter());
+        // Debug.Log("Game Started");
+        // ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
+        // ActionMenuButton.onClick.AddListener(MoveToActivityScene);
+        // SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
+        // SleepButton.image.sprite = bedDay;
+        // SleepButton.onClick.AddListener(OnButtonClick);
+        // HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
+        // SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
+        // CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
+        // HungerSlider.maxValue = 100;
+        // SleepinessSlider.maxValue = 100;
+        // CleanlinessSlider.maxValue = 100;
     }
 
     void Update()
     {
-        Character.transform.LookAt(new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z));
-        //Character.transform.position = new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z + 0.5f);
-        HungerSlider.value = Fullness;
-        SleepinessSlider.value = Awakeness;
-        CleanlinessSlider.value = Cleanliness;
+        if (Character == null || PlayerCamera == null) return;
+
+        Character.transform.LookAt(
+            new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z)
+        );
+
+        if (HungerSlider != null) HungerSlider.value = Fullness;
+        if (SleepinessSlider != null) SleepinessSlider.value = Awakeness;
+        if (CleanlinessSlider != null) CleanlinessSlider.value = Cleanliness;
+        
+    }
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name != "SampleScene") return; // your game scene
+
+        InitializeGameplay();
+    }
+        void InitializeGameplay()
+    {
+        Debug.Log("Initializing gameplay");
+
+        PlayerCamera = Camera.main.transform;
+        Character = GameObject.FindWithTag("Character");
+
+        ActionMenuButton = GameObject.Find("ActionMenuButton")?.GetComponent<Button>();
+        SleepButton = GameObject.Find("SleepButton")?.GetComponent<Button>();
+        HungerSlider = GameObject.Find("Hunger")?.GetComponent<Slider>();
+        SleepinessSlider = GameObject.Find("Sleepiness")?.GetComponent<Slider>();
+        CleanlinessSlider = GameObject.Find("Cleanliness")?.GetComponent<Slider>();
+
+        if (SleepButton != null)
+            SleepButton.onClick.AddListener(OnButtonClick);
+
+        if (ActionMenuButton != null)
+            ActionMenuButton.onClick.AddListener(MoveToActivityScene);
+
+        StartCoroutine(HappyCharacter());
+    }
+
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void EverySecond()
@@ -97,6 +152,14 @@ public class GameManager : MonoBehaviour
             }
         }
         
+    }
+        public void UpdateCreatureStats(float happiness, float cleanliness, float hunger) // used in login code
+    {
+        this.Recreation = happiness;
+        this.Cleanliness = cleanliness;
+        this.Fullness = hunger;
+
+        Debug.Log("Creature stats updated");
     }
 
     public void OnButtonClick()
