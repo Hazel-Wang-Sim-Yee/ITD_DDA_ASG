@@ -4,7 +4,7 @@ using Firebase.Database;
 using Firebase.Extensions;
 using TMPro;
 using UnityEditor;
-using SceneManagement = UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class Player
 {
@@ -13,10 +13,12 @@ public class Player
     public float happiness;
     public float cleanliness;
     public float hunger;
+    public int stage;
 }
 
 public class LogIn : MonoBehaviour
 {
+    public static LogIn instance;
      public TMP_InputField emailInputField;
      public TMP_InputField passwordInputField;
      public TMP_Text errorText;
@@ -66,21 +68,36 @@ public class LogIn : MonoBehaviour
                 string playerJson = snapshot.GetRawJsonValue();
                 Player playerData = JsonUtility.FromJson<Player>(playerJson);
 
-                GameManager.instance.UpdateCreatureStats(
-                    playerData.userId,
+                StatManager.instance.RetrieveCreatureStats(
+                    userId,
                     playerData.name,
                     playerData.happiness,
                     playerData.cleanliness,
-                    playerData.hunger
+                    playerData.hunger,
+                    playerData.stage
                 );
                 
                 errorText.text = "";
 
-
-                SceneManagement.SceneManager.LoadScene("SampleScene");
+                Debug.Log("Login successful, loading game scene...");
+                if (playerData.stage == 1)
+                    {
+                       SceneManager.LoadScene("Naming&Choosing"); 
+                    }
+                else
+                    {
+                       SceneManager.LoadScene("SampleScene"); 
+                    }
+                
             }
             });
         }
         });
+     }
+
+     public void GoToSignUpSite()
+     {
+        Debug.Log("Opening sign-up site...");
+        Application.OpenURL("https://www.youtube.com/watch?v=mPHnf6W3ZLA");
      }
 }

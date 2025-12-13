@@ -17,9 +17,16 @@ public class AutoPlacementofCharacter : MonoBehaviour
     private ARPlaneManager arPlaneManager;
     void Awake()
     {
-        dismissButton.onClick.AddListener(Dismiss);
-        arPlaneManager = GetComponent<ARPlaneManager>();
-        arPlaneManager.planesChanged += PlaneChanged;
+        dismissButton.onClick.AddListener(Dismiss); 
+        if (placedObject == null)
+        {
+            arPlaneManager = GetComponent<ARPlaneManager>();
+            arPlaneManager.planesChanged += PlaneChanged;
+        }
+        else
+        {
+            arPlaneManager.planesChanged += ResetCharacterSpawning;
+        }
     }
 
     private void PlaneChanged(ARPlanesChangedEventArgs args)
@@ -40,5 +47,13 @@ public class AutoPlacementofCharacter : MonoBehaviour
     private void Dismiss()
     {
         welcomePanel.SetActive(false);
+    }
+
+    private void ResetCharacterSpawning(ARPlanesChangedEventArgs args)
+    {
+        args.added.Clear();
+        placedObject = null;
+        arPlaneManager = GetComponent<ARPlaneManager>();
+        arPlaneManager.planesChanged += PlaneChanged;
     }
 }
