@@ -8,6 +8,8 @@ using SceneManagement = UnityEngine.SceneManagement;
 
 public class Player
 {
+    public string userId;
+    public string name;
     public float happiness;
     public float cleanliness;
     public float hunger;
@@ -28,26 +30,9 @@ public class LogIn : MonoBehaviour
                
         if (task.IsCanceled || task.IsFaulted)
         {
-            // // Unwrap AggregateException
-            // errorText.text = "Email or password is incorrect. Please try again.";
-            // if (task.Exception != null)
-            // {
-            //     var flattened = task.Exception.Flatten();
-            //     foreach (var inner in flattened.InnerExceptions)
-            //     {
-            //         string lower = inner.Message.ToLower();
-
-            //         if (lower.Contains("invalid email"))
-            //             errorText.text = "Please enter a valid email address.";
-            //         else if (lower.Contains("wrong password"))
-            //             errorText.text = "Email or password is incorrect.";
-            //         else if (lower.Contains("user not found"))
-            //             errorText.text = "No account found with this email.";
-            //         else if (lower.Contains("network error"))
-            //             errorText.text = "Network error. Check your connection.";
-            //         // Add more cases as needed
-            //     }
-            // }
+            Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+            errorText.text = "Login Failed. Please check your email and password.";
+            return;
         }
             
 
@@ -69,27 +54,30 @@ public class LogIn : MonoBehaviour
 
             if (task.IsCompleted)
             {
-                    DataSnapshot snapshot = task.Result;
+                Debug.Log(task.Result.GetRawJsonValue());
+                DataSnapshot snapshot = task.Result;
 
-                    if (!snapshot.Exists)
-                    {
-                        Debug.Log("No creature data found");
-                        return;
-                    }
+                if (!snapshot.Exists)
+                {
+                    Debug.Log("No creature data found");
+                    return;
+                }
 
-                    string playerJson = snapshot.GetRawJsonValue();
-                    Player playerData = JsonUtility.FromJson<Player>(playerJson);
+                string playerJson = snapshot.GetRawJsonValue();
+                Player playerData = JsonUtility.FromJson<Player>(playerJson);
 
-                    GameManager.instance.UpdateCreatureStats(
-                        playerData.happiness,
-                        playerData.cleanliness,
-                        playerData.hunger
-                    );
-                    errorText.text = "";
+                GameManager.instance.UpdateCreatureStats(
+                    playerData.userId,
+                    playerData.name,
+                    playerData.happiness,
+                    playerData.cleanliness,
+                    playerData.hunger
+                );
+                
+                errorText.text = "";
 
-                    Debug.Log("Stats loaded, switching scene");
 
-                    SceneManagement.SceneManager.LoadScene("SampleScene");
+                SceneManagement.SceneManager.LoadScene("SampleScene");
             }
             });
         }

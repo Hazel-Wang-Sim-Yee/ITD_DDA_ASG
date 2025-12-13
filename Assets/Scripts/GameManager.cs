@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public Slider HungerSlider;
     public Slider SleepinessSlider;
     public Slider CleanlinessSlider;
-
+    
     public Button SleepButton;
 
     public Button ActionMenuButton;
@@ -23,17 +23,20 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public Sprite bedNight;
+    public string userId;
 
     [SerializeField]
     GameObject Character;
     [SerializeField]
+    string BonName = "BonNui";
+    [SerializeField]
     float Awakeness = 100;
     [SerializeField]
-    float Cleanliness = 100;
+    public float Cleanliness = 100;
     [SerializeField]
-    float Fullness = 100;
+    public float Fullness = 100;
     [SerializeField]
-    float Recreation = 100;
+    public float Recreation = 100;
     [SerializeField]
     string currentState = "HappyCharacter";
     [SerializeField]
@@ -45,25 +48,42 @@ public class GameManager : MonoBehaviour
 
     public Transform PlayerCamera;
 
-    void Start()
+    /// <summary>
+    /// Ensures that the GameManager persists across scenes and implements the singleton pattern.
+    /// </summary>
+    void Awake()
     {
-        isSleeping = false;
-        PlayerCamera = Camera.main.transform;
-        Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
-        StartCoroutine(HappyCharacter());
-        Debug.Log("Game Started");
-        ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
-        ActionMenuButton.onClick.AddListener(MoveToActivityScene);
-        SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
-        SleepButton.image.sprite = bedDay;
-        SleepButton.onClick.AddListener(OnButtonClick);
-        HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
-        SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
-        CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
-        HungerSlider.maxValue = 100;
-        SleepinessSlider.maxValue = 100;
-        CleanlinessSlider.maxValue = 100;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
+/// <summary>
+/// preferably dont use start because the login page will have issues because the buttons and sliders dont exist on login scene
+/// </summary>
+    // void Start()
+    // {
+    //     isSleeping = false;
+    //     PlayerCamera = Camera.main.transform;
+    //     Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
+    //     StartCoroutine(HappyCharacter());
+    //     Debug.Log("Game Started");
+    //     ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
+    //     ActionMenuButton.onClick.AddListener(MoveToActivityScene);
+    //     SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
+    //     SleepButton.image.sprite = bedDay;
+    //     SleepButton.onClick.AddListener(OnButtonClick);
+    //     HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
+    //     SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
+    //     CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
+    //     HungerSlider.maxValue = 100;
+    //     SleepinessSlider.maxValue = 100;
+    //     CleanlinessSlider.maxValue = 100;
+    // }
 
     void Update()
     {
@@ -140,8 +160,10 @@ public class GameManager : MonoBehaviour
         }
         
     }
-        public void UpdateCreatureStats(float happiness, float cleanliness, float hunger) // used in login code
+        public void UpdateCreatureStats(string userId, string name, float happiness, float cleanliness, float hunger) // used in login code
     {
+        this.userId = userId;
+        this.BonName = name;
         this.Recreation = happiness;
         this.Cleanliness = cleanliness;
         this.Fullness = hunger;
