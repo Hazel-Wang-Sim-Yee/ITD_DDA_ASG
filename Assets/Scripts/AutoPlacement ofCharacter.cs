@@ -6,8 +6,6 @@ public class AutoPlacementofCharacter : MonoBehaviour
 {
     [SerializeField]
     private GameObject welcomePanel;
-    [SerializeField]
-    private GameObject gamePanel;
 
     [SerializeField]
     private GameObject placedPrefab;
@@ -28,14 +26,19 @@ public class AutoPlacementofCharacter : MonoBehaviour
     {
         if (args.added != null && placedObject == null)
         {
+            Debug.Log(args.added.Count);
             ARPlane arPlane = args.added[0];
             placedObject = Instantiate(placedPrefab, arPlane.transform.position, Quaternion.identity);
+            if (placedObject != null)
+            {
+                Debug.Log("Placed Object");
+                arPlaneManager.planesChanged -= PlaneChanged;
+            }
         }
     }
 
     private void Dismiss()
     {
         welcomePanel.SetActive(false);
-        gamePanel.SetActive(true);
     }
 }

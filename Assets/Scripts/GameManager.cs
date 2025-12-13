@@ -45,37 +45,24 @@ public class GameManager : MonoBehaviour
 
     public Transform PlayerCamera;
 
-    void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
-        }
-    }
     void Start()
     {
-        // isSleeping = false;
-        // PlayerCamera = Camera.main.transform;
-        // Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
-        // StartCoroutine(HappyCharacter());
-        // Debug.Log("Game Started");
-        // ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
-        // ActionMenuButton.onClick.AddListener(MoveToActivityScene);
-        // SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
-        // SleepButton.image.sprite = bedDay;
-        // SleepButton.onClick.AddListener(OnButtonClick);
-        // HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
-        // SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
-        // CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
-        // HungerSlider.maxValue = 100;
-        // SleepinessSlider.maxValue = 100;
-        // CleanlinessSlider.maxValue = 100;
+        isSleeping = false;
+        PlayerCamera = Camera.main.transform;
+        Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
+        StartCoroutine(HappyCharacter());
+        Debug.Log("Game Started");
+        ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
+        ActionMenuButton.onClick.AddListener(MoveToActivityScene);
+        SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
+        SleepButton.image.sprite = bedDay;
+        SleepButton.onClick.AddListener(OnButtonClick);
+        HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
+        SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
+        CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
+        HungerSlider.maxValue = 100;
+        SleepinessSlider.maxValue = 100;
+        CleanlinessSlider.maxValue = 100;
     }
 
     void Update()
