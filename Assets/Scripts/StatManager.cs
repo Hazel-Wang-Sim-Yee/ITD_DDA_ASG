@@ -1,3 +1,8 @@
+/*
+* Author: Emilie
+* Date: 2025-12-09
+* Description: Manages the stats of the creature and handles data retrieval and updates with Firebase.
+*/
 using UnityEngine;
 using Firebase.Database;
 using TMPro;
@@ -7,27 +12,28 @@ using UnityEngine.SceneManagement;
 
 public class StatManager : MonoBehaviour
 {
-    public static StatManager instance;
+    public static StatManager instance; // Singleton instance
 
-    public float happiness;
-    public float cleanliness;
-    public float hunger;
-    public string name;
-    public string userId;
-    public int stage;
-    public float awakeness;
+    public float happiness; // Creature's happiness level
+    public float cleanliness; // Creature's cleanliness level
+    public float hunger; // Creature's hunger level
+    public string name; // Creature's name
+    public string userId; // User ID
+    public int stage; // Creature's growth stage
+    public float awakeness; // Creature's awakeness level
 
-    public float Recreation;
-    public float Cleanliness;
-    public float Fullness;
-    public string BonName;
-    public string UserId;
-    public int Stage;
-    public float Awakeness;
+    public float Recreation; // Happiness stat
+    public float Cleanliness; // Cleanliness stat
+    public float Fullness; // Hunger stat
+    public string BonName; // Creature's name
+    public string UserId; // User ID
+    public int Stage; // Growth stage
+    public float Awakeness; // Awakeness stat
 
 
     private void Awake()
     {
+        // Initialize the singleton instance
         if (instance == null)
         {
             instance = this;
@@ -41,6 +47,7 @@ public class StatManager : MonoBehaviour
         Awakeness = awakeness;
     }
 
+    // Retrieve creature stats from Firebase
     public void RetrieveCreatureStats(string userId, string name, float happiness, float cleanliness, float hunger, int stage) // used in login code
     {
         UserId = userId;
@@ -49,27 +56,15 @@ public class StatManager : MonoBehaviour
         Cleanliness = cleanliness;
         Fullness = hunger;
         Stage = stage;
-
-
-        Debug.Log("Creature stats retrieved");
     }
 
+    // Update creature name
     public void UpdateCreatureName(string name) // used in naming code
     {
         BonName = name;
-        Debug.Log("Creature name updated to: " + BonName);
     }
 
-    /*public void UpdateCreatureStats() // used in game manager code
-    {
-        userId = StatManager.instance.UserId;
-        BonName = StatManager.instance.BonName;
-        Recreation = StatManager.instance.Recreation;
-        Cleanliness = StatManager.instance.Cleanliness;
-        Fullness = StatManager.instance.Fullness;
-        Debug.Log("Creature stats updated");
-    }*/
-
+    // Update creature data in Firebase
     public void updateDataFromPlayer(string userId, float Recreation, float Cleanliness, float Fullness)
      {
           // 1. Get userId
@@ -118,6 +113,7 @@ public class StatManager : MonoBehaviour
           Debug.Log("Creature data updated");
      }
 
+    // Update awakeness stat
      public void UpdateAwakeness()
     {
         awakeness -= 50f;

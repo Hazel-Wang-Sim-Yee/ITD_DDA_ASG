@@ -1,3 +1,8 @@
+/*
+* Author: Emilie
+* Date: 2025-12-09
+* Description: Handles user login using Firebase Authentication and retrieves player data from Firebase Realtime Database.
+*/
 using UnityEngine;
 using Firebase.Auth;
 using Firebase.Database;
@@ -8,24 +13,24 @@ using UnityEngine.SceneManagement;
 
 public class Player
 {
-    public string userId;
-    public string name;
-    public float happiness;
-    public float cleanliness;
-    public float hunger;
-    public int stage;
+    public string userId; // Added userId to match retrieval
+    public string name; // Creature's name
+    public float happiness; // Creature's happiness level
+    public float cleanliness; // Creature's cleanliness level
+    public float hunger; // Creature's hunger level
+    public int stage; // Creature's growth stage
 }
 
 public class LogIn : MonoBehaviour
 {
-    public static LogIn instance;
-     public TMP_InputField emailInputField;
-     public TMP_InputField passwordInputField;
-     public TMP_Text errorText;
+    public static LogIn instance; // Singleton instance
+     public TMP_InputField emailInputField; // Input field for email
+     public TMP_InputField passwordInputField; // Input field for password
+     public TMP_Text errorText; // Text element to display error messages
 
+    // When Log In Button is clicked
     public void signIn()
     {
-          
         var LogInTask = FirebaseAuth.DefaultInstance.SignInWithEmailAndPasswordAsync(emailInputField.text, passwordInputField.text);
         LogInTask.ContinueWith(task =>
         {
@@ -36,9 +41,8 @@ public class LogIn : MonoBehaviour
             errorText.text = "Login Failed. Please check your email and password.";
             return;
         }
-            
 
-
+        // Successful login
         if (task.IsCompleted)
         {
             FirebaseUser newUser = task.Result.User;
@@ -95,9 +99,10 @@ public class LogIn : MonoBehaviour
         });
      }
 
+        // When Sign Up Button is clicked
      public void GoToSignUpSite()
      {
         Debug.Log("Opening sign-up site...");
-        Application.OpenURL("https://www.youtube.com/watch?v=mPHnf6W3ZLA");
+        Application.OpenURL("https://itdddaprojecthe.web.app/");
      }
 }

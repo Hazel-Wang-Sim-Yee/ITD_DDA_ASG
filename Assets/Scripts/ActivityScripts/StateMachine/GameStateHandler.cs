@@ -1,3 +1,8 @@
+/*
+* Author: Hazel
+* Date: 2025-12-08
+* Description: Abstract base class for handling game states.
+*/
 using UnityEngine;
 
 [System.Serializable]

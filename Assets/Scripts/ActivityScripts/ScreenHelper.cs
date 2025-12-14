@@ -1,3 +1,8 @@
+/*
+* Author: Hazel
+* Date: 2025-12-08
+* Description: Helper class to calculate screen boundaries in world coordinates.
+*/
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,10 +10,11 @@ using System.Collections.Generic;
 
 public class ScreenHelper : MonoBehaviour
 {
-    public static float ScreenTop;
-    public static float ScreenLeft;
-    public static float ScreenRight;
+    public static float ScreenTop; // Top boundary of the screen in world coordinates
+    public static float ScreenLeft; // Left boundary of the screen in world coordinates
+    public static float ScreenRight; // Right boundary of the screen in world coordinates
 
+    // Calculate screen boundaries on Awake
     private void Awake()
     {
         Vector3 cameraPosition = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0));

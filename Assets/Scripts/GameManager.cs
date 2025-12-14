@@ -1,3 +1,8 @@
+/*
+* Author: Hazel
+* Date: 2025-11-12
+* Description: Manages the overall game state and character behaviour.
+*/
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -8,146 +13,101 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager instance; // Singleton instance
 
-    public Slider HungerSlider;
-    public Slider SleepinessSlider;
-    public Slider CleanlinessSlider;
+    public Slider HungerSlider; // Reference to the Hunger UI slider
+    public Slider SleepinessSlider; // Reference to the Sleepiness UI slider
+    public Slider CleanlinessSlider; // Reference to the Cleanliness UI slider
 
-    public Button SleepButton;
+    public Button SleepButton; // Reference to the Sleep button
 
-    public Button ActionMenuButton;
+    public Button ActionMenuButton; // Reference to the Action Menu button
 
-    public Button ExitButton;
-
-    [SerializeField]
-    public Sprite bedDay;
+    public Button ExitButton; // Reference to the Exit button
 
     [SerializeField]
-    public Sprite bedNight;
-    public string userId;
+    public Sprite bedDay; // Sprite for bed during the day
 
     [SerializeField]
-    GameObject Character;
-    [SerializeField]
-    public string BonName = "BonNui";
-    [SerializeField]
-    float Awakeness = 100;
-    [SerializeField]
-    public float Cleanliness = 100;
-    [SerializeField]
-    public float Fullness = 100;
-    [SerializeField]
-    public float Recreation = 100;
-    [SerializeField]
-    string currentState = "HappyCharacter";
-    [SerializeField]
-    public bool isSleeping = false;
-    [SerializeField]
-    public Material happyMaterial;
-    [SerializeField]
-    public Material unhappyMaterial;
+    public Sprite bedNight; // Sprite for bed during the night
+    public string userId; // User ID of the player
 
-    public Transform PlayerCamera;
+    [SerializeField]
+    GameObject Character; // Reference to the character GameObject
+    [SerializeField]
+    public string BonName = "BonNui"; // Name of the character
+    [SerializeField]
+    float Awakeness = 100; // Awakeness level of the character
+    [SerializeField]
+    public float Cleanliness = 100; // Cleanliness level of the character
+    [SerializeField]
+    public float Fullness = 100; // Fullness level of the character
+    [SerializeField]
+    public float Recreation = 100; // Recreation level of the character
+    [SerializeField]
+    string currentState = "HappyCharacter"; // Current state of the character
+    [SerializeField]
+    public bool isSleeping = false; // Indicates if the character is sleeping
+    [SerializeField]
+    public Material happyMaterial; // Material for happy character
+    [SerializeField]
+    public Material unhappyMaterial; // Material for unhappy character
 
-    /// <summary>
-    /// Ensures that the GameManager persists across scenes and implements the singleton pattern.
-    /// </summary>
-    /*void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+    public Transform PlayerCamera; // Reference to the player's camera
 
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-    }*/
-    /// <summary>
-    /// preferably dont use start because the login page will have issues because the buttons and sliders dont exist on login scene
-    /// </summary>
+    // Assign values and set up the game manager
     void Start()
     {
-        isSleeping = false;
-        PlayerCamera = Camera.main.transform;
-        Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z);
-        StartCoroutine(HappyCharacter());
-        Debug.Log("Game Started");
-        ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>();
-        ActionMenuButton.onClick.AddListener(MoveToActivityScene);
-        ExitButton = GameObject.Find("LogOut").GetComponent<Button>();
-        ExitButton.onClick.AddListener(OnExitButtonClick);
-        SleepButton = GameObject.Find("SleepButton").GetComponent<Button>();
-        SleepButton.image.sprite = bedDay;
-        SleepButton.onClick.AddListener(OnButtonClick);
-        HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>();
-        SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>();
-        CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>();
-        HungerSlider.maxValue = 100;
-        SleepinessSlider.maxValue = 100;
-        CleanlinessSlider.maxValue = 100;
-        userId = StatManager.instance.UserId;
-        BonName = StatManager.instance.BonName;
-        Recreation = StatManager.instance.Recreation;
-        Cleanliness = StatManager.instance.Cleanliness;
-        Fullness = StatManager.instance.Fullness;
-        Awakeness = StatManager.instance.Awakeness;
+        isSleeping = false; // Initialize sleeping state
+        PlayerCamera = Camera.main.transform; // Get the main camera transform
+        Character.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y + 0.5f, Character.transform.position.z); // Adjust character position
+        StartCoroutine(HappyCharacter()); // Start the happy character coroutine
+        ActionMenuButton = GameObject.Find("ActionMenuButton").GetComponent<Button>(); // Find and assign the Action Menu button
+        ActionMenuButton.onClick.AddListener(MoveToActivityScene); // Add listener to the Action Menu button
+        ExitButton = GameObject.Find("LogOut").GetComponent<Button>(); // Find and assign the Exit button
+        ExitButton.onClick.AddListener(OnExitButtonClick); // Add listener to the Exit button
+        SleepButton = GameObject.Find("SleepButton").GetComponent<Button>(); // Find and assign the Sleep button
+        SleepButton.image.sprite = bedDay; // Set initial sprite for Sleep button
+        SleepButton.onClick.AddListener(OnButtonClick); // Add listener to the Sleep button
+        HungerSlider = GameObject.Find("Hunger").GetComponent<Slider>(); // Find and assign the Hunger slider
+        SleepinessSlider = GameObject.Find("Sleepiness").GetComponent<Slider>(); // Find and assign the Sleepiness slider
+        CleanlinessSlider = GameObject.Find("Cleanliness").GetComponent<Slider>(); // Find and assign the Cleanliness slider
+        HungerSlider.maxValue = 100; // Set max value for Hunger slider
+        SleepinessSlider.maxValue = 100; // Set max value for Sleepiness slider
+        CleanlinessSlider.maxValue = 100; // Set max value for Cleanliness slider
+        userId = StatManager.instance.UserId; // Get user ID from StatManager
+        BonName = StatManager.instance.BonName; // Get character name from StatManager
+        Recreation = StatManager.instance.Recreation; // Get recreation level from StatManager
+        Cleanliness = StatManager.instance.Cleanliness; // Get cleanliness level from StatManager
+        Fullness = StatManager.instance.Fullness; // Get fullness level from StatManager
+        Awakeness = StatManager.instance.Awakeness; // Get awakeness level from StatManager
     }
 
+    // Update character behaviour and UI each frame
     void Update()
     {
+        // Make the character face the player camera
         if (Character == null || PlayerCamera == null) return;
 
         Character.transform.LookAt(
             new Vector3(PlayerCamera.position.x, Character.transform.position.y, PlayerCamera.position.z)
         );
 
+        // Update the UI sliders with current stats
         if (HungerSlider != null) HungerSlider.value = Fullness;
         if (SleepinessSlider != null) SleepinessSlider.value = Awakeness;
         if (CleanlinessSlider != null) CleanlinessSlider.value = Cleanliness;
         
 
     }
+
+    // Handle scene loading events
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name != "SampleScene") return; // your game scene
-
-        //InitializeGameplay();
     }
-    /*    void InitializeGameplay()
-    {
-        Debug.Log("Initializing gameplay");
-
-        PlayerCamera = Camera.main.transform;
-        Character = GameObject.FindWithTag("Character");
-
-        ActionMenuButton = GameObject.Find("ActionMenuButton")?.GetComponent<Button>();
-        SleepButton = GameObject.Find("SleepButton")?.GetComponent<Button>();
-        HungerSlider = GameObject.Find("Hunger")?.GetComponent<Slider>();
-        SleepinessSlider = GameObject.Find("Sleepiness")?.GetComponent<Slider>();
-        CleanlinessSlider = GameObject.Find("Cleanliness")?.GetComponent<Slider>();
-
-        if (SleepButton != null)
-            SleepButton.onClick.AddListener(OnButtonClick);
-
-        if (ActionMenuButton != null)
-            ActionMenuButton.onClick.AddListener(MoveToActivityScene);
-
-        StartCoroutine(HappyCharacter());
-    }
-
-
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }*/
-
+    
+    // Decrease character stats every second
     void EverySecond()
     {
         if (Awakeness > 0 || Cleanliness > 0 || Fullness > 0 || Recreation > 0)
@@ -171,21 +131,13 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    /*    public void UpdateCreatureStats(string userId, string name, float happiness, float cleanliness, float hunger) // used in login code
-    {
-        this.userId = userId;
-        this.BonName = name;
-        this.Recreation = happiness;
-        this.Cleanliness = cleanliness;
-        this.Fullness = hunger;
 
-        Debug.Log("Creature stats updated");
-    }*/
-
+    // Handle Sleep button click to toggle sleeping state
     public void OnButtonClick()
     {
         isSleeping = !isSleeping;
         Debug.Log("isSleeping: " + isSleeping);
+        // Change character state based on sleeping status
         if (isSleeping)
         {
             Debug.Log("Sleep button is " + SleepButton);
@@ -198,47 +150,49 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Handle Exit button click to log out and return to login scene
     public void OnExitButtonClick()
     {
+        // Update player stats in StatManager before logging out
         StatManager.instance.updateDataFromPlayer(userId, Recreation, Cleanliness, Fullness);
-        Debug.Log("Logging out and returning to login scene");
         SceneManager.LoadScene("LogInPage");
     }
 
+    // Move to the activity scene
     public void MoveToActivityScene()
     {
         StatManager.instance.UpdateAwakeness();
         SceneManager.LoadScene("Activity");
     }
 
+    // Handle character interactions with triggers
     void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.gameObject.name + " triggered");
+        // Check for food interaction
         if (other.gameObject.CompareTag("Food"))
         {
-            Debug.Log("Character triggered with food");
             StartCoroutine(StateChanger("IdentifiedFood"));
             if (other.gameObject.GetComponent<FoodBehaviour>().Eatable == true)
             {
-                Debug.Log("Character is eating the food");
                 other.gameObject.SetActive(false);
                 StartCoroutine(StateChanger("EatingFood"));
             }
         }
 
+        // Check for shower interaction
         if (other.gameObject.CompareTag("Shower"))
         {
             if (other.gameObject.GetComponent<ShowerBehaviour>().ShowerOn == true)
             {
-                Debug.Log("Character triggered with shower");
                 StartCoroutine(StateChanger("Showering"));
             }
         }
     }
 
+    // Change the current state of the character
     IEnumerator StateChanger(string newState)
     {
-        Debug.Log("Changing state to: " + newState);
+        // If already in the desired state, do nothing
         if (currentState == newState)
         {
             yield break; // Already in the desired state
@@ -246,18 +200,20 @@ public class GameManager : MonoBehaviour
 
         currentState = newState;
 
-        StartCoroutine(currentState);
-        Debug.Log("Current State: " + currentState);
+        StartCoroutine(currentState); // Start the coroutine for the new state
     }
 
+    // Coroutine for the happy character state
     IEnumerator HappyCharacter()
     {
+        // If the character is sleeping, switch to sleeping state
         if (isSleeping)
         {
             StartCoroutine(StateChanger("Sleeping"));
             yield break;
         }
-        //Debug.Log("The character is happy");
+
+        // Loop while in happy character state
         while (currentState == "HappyCharacter")
         {
             EverySecond();
@@ -267,7 +223,6 @@ public class GameManager : MonoBehaviour
             // If any stat falls below a threshold, switch to unhappy state
             if (Awakeness < 50 || Cleanliness < 50 || Fullness < 50 || Recreation < 50)
             {
-                Debug.Log("Character is becoming unhappy due to low stats");
                 StartCoroutine(StateChanger("UnhappyCharacter"));
                 yield break; // Exit this coroutine
             }
@@ -275,6 +230,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Coroutine for the unhappy character state
     IEnumerator UnhappyCharacter()
     {
         while (currentState == "UnhappyCharacter")
@@ -286,7 +242,6 @@ public class GameManager : MonoBehaviour
             // If all stats are above a threshold, switch to happy state
             if (Awakeness >= 50 && Cleanliness >= 50 && Fullness >= 50 && Recreation >= 50)
             {
-                Debug.Log("Character is becoming happy again due to good stats");
                 StartCoroutine(StateChanger("HappyCharacter"));
                 yield break; // Exit this coroutine
             }
@@ -298,7 +253,6 @@ public class GameManager : MonoBehaviour
     {
         while (currentState == "IdentifiedFood")
         {
-            //Debug.Log("Character has identified food");
             // Logic for identified food state
             Character.GetComponent<Renderer>().material.color = Color.yellow; // Example: Change character color to yellow
 
@@ -313,7 +267,6 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == "EatingFood")
         {
-            Debug.Log("Character is eating food");
             // Logic for eating food state
             Character.GetComponent<Renderer>().material.color = Color.blue; // Example: Change character color to blue
 
@@ -330,7 +283,6 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == "Showering")
         {
-            Debug.Log("Character is showering");
             // Logic for showering state
             Character.GetComponent<Renderer>().material.color = Color.cyan; // Example: Change character color to cyan
 
@@ -347,7 +299,6 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == "Sleeping")
         {
-            Debug.Log("Character is sleeping");
             // Logic for sleeping state
             Character.GetComponent<Renderer>().material.color = Color.magenta; // Example: Change character color to magenta
             SleepButton.image.sprite = bedNight;
