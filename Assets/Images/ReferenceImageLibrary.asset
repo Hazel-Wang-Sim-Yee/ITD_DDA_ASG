@@ -51,9 +51,9 @@ MonoBehaviour:
       m_GuidLow: 4827808523519908378
       m_GuidHigh: 2898875285099705019
     m_SerializedTextureGuid:
-      m_GuidLow: 1262260571878398139
-      m_GuidHigh: 12291794386558295290
-    m_Size: {x: 0.1, y: 0.1}
+      m_GuidLow: 13525661286439788378
+      m_GuidHigh: 12199776710012548377
+    m_Size: {x: 0.1, y: 0.096264854}
     m_SpecifySize: 1
     m_Name: Shower
     m_Texture: {fileID: 0}
